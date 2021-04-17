@@ -14,13 +14,26 @@ class Article(db.Model):
     clicks = db.Column(db.INTEGER, default=0)
 
     def __repr__(self):
-        return '<Article %r>' % self.clicks
+        return '<Article %r>' % self.id
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/home', methods=['POST', 'GET'])
 def home():
     articles = Article.query.order_by(Article.clicks.desc()).all()
     return render_template("index.html", articles=articles)
+
+
+@app.route('/rer', methods=['POST', 'GET'])
+def rer():
+    art = Article.query.get(id)
+    try:
+        art.clicks = request.form['clicks']
+        db.session.commit()
+        return redirect('/')
+    except:
+        return "Plak"
+
+    return redirect('/')
 
 
 @app.route('/add', methods=['POST', 'GET'])
@@ -28,7 +41,6 @@ def ad():
     if request.method == "POST":
         link = request.form['link']
         name = request.form['name']
-
         article = Article(link=link, name=name)
 
         try:

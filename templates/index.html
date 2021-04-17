@@ -17,19 +17,22 @@
     <div class="container mt-5">
 <h1>Все ссылки</h1>
         {% for a in articles %}
-            <div class="alert alert-info">
-            <h2>{{ a.name }}</h2>
-              <botton onclick="displaycount()">Click</botton>
-            <p id="carrier">{{ a.clicks }}</p>
             <script>
-    var count =(function() {
-        var counter = {{ a.clicks }};
-        return function () {return counter += 1;}
-    })();
-    function displaycount(){
-        document.getElementById("carrier").innerHTML = count();
-    }
-</script>
+   document.querySelectorAll('li .btn')
+  .forEach(function(el){
+    el.onclick = function() {
+      let cnt = this.closest('li').querySelector('.cnt');
+      cnt.innerText = parseInt(cnt.innerText, 10)+1;
+    };
+  });
+  </script>
+            <div class="alert alert-info">
+                <h2 id="id">{{ a.name }}</h2>
+<li>
+    <a href={{ a.link }} class="btn">link</a>
+    <span class="cnt">{{ a.clicks }}</span>
+  </li>
+
             </div>
         {% endfor %}
     </div>
